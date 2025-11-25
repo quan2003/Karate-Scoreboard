@@ -247,7 +247,7 @@ body {
 
 .timer-content.individual-mode > .logo-container {
   order: 2;
-  margin-left: 2vw;
+  /* margin-left: 0vw; */
   position: static;
   transform: none;
 }
