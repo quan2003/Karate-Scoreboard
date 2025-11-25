@@ -223,12 +223,18 @@ function updateTimerDisplay() {
 // Update team mode display
 function updateTeamModeDisplay() {
   const teamInfoContainer = document.getElementById("teamInfoContainer");
+  const timerContent = document.querySelector(".timer-content");
 
   if (!teamInfoContainer) return;
 
   // Show/hide based on mode
   if (state.mode === "team" && state.teamMode) {
     teamInfoContainer.style.display = "flex";
+    
+    // Remove individual mode class
+    if (timerContent) {
+      timerContent.classList.remove("individual-mode");
+    }
 
     // Update round number
     const roundNumber = document.getElementById("roundNumber");
@@ -247,6 +253,11 @@ function updateTeamModeDisplay() {
     }
   } else {
     teamInfoContainer.style.display = "none";
+    
+    // Add individual mode class
+    if (timerContent) {
+      timerContent.classList.add("individual-mode");
+    }
   }
 }
 

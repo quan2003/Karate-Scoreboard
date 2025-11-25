@@ -201,13 +201,55 @@ body {
 
 .timer-content {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 5vw;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
   position: relative;
   padding: 0 2vw;
+  gap: 2vw;
+}
+
+/* Team mode layout - Event title bên trái, timer + logo giữa, team info bên phải */
+.timer-content > .event-title {
+  flex-shrink: 0;
+  order: 1;
+}
+
+.timer-content > .logo-container {
+  flex-shrink: 0;
+  order: 2;
+  position: absolute;
+  left: 50%;
+  transform: translateX(calc(-50% - 25vw));
+}
+
+.timer-content > .timer-display {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  order: 3;
+}
+
+.timer-content > .team-info-container {
+  flex-shrink: 0;
+  order: 4;
+  margin-left: auto;
+}
+
+/* Individual mode layout - Event và logo bên trái, timer ở giữa tuyệt đối */
+.timer-content.individual-mode {
+  justify-content: flex-start;
+}
+
+.timer-content.individual-mode > .event-title {
+  order: 1;
+}
+
+.timer-content.individual-mode > .logo-container {
+  order: 2;
+  margin-left: 2vw;
+  position: static;
+  transform: none;
 }
 
 /* Event Title - Bên cạnh timer */
