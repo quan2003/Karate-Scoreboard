@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karate Scoreboard - Admin Panel</title>
+    <link rel="stylesheet" href="css/admin.css" />
+    <!-- XLSX Library for Excel Export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>KARATE SCOREBOARD - ADMIN PANEL</h1>
+
+      <!-- TOP SECTION - Full Width -->
+      <div class="section full-width">
+        <h2>⚙️ Cài Đặt Chung</h2>
+        <div class="btn-group">
+          <button
+            class="btn btn-primary active"
+            onclick="setContentType('individual')"
+          >
+            Cá Nhân
+          </button>
+          <button class="btn btn-primary" onclick="setContentType('team')">
+            Đồng Đội
+          </button>
+          <button class="btn btn-warning" onclick="swapPositions()">
+            🔄 Đổi AKA ⇄ AO
+          </button>
+          <button class="btn btn-lg btn-primary" onclick="openDisplay()">
+            📺 Mở Display
+          </button>
+          <button
+            class="btn btn-lg btn-success"
+            onclick="window.open('medals.html', '_blank')"
+            style="
+              background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            "
+          >
+            🏆 Quản Lý Huy Chương
+          </button>
+        </div>
+      </div>
+      <!-- Event Info - Full Width -->
+      <div class="section full-width">
+        <h2>📋 Thông Tin Trận Đấu</h2>
+        <div class="form-group" style="margin-bottom: 15px">
+          <label>Tournament Title:</label>
+          <input
+            type="text"
+            id="tournamentTitle"
+            value="GIẢI KARATE-DO SINH VIÊN TRƯỜNG ĐẠI HỌC CNTT VÀ TT VIỆT-HÀN MỞ RỘNG LẦN THỨ I - 2025"
+            oninput="updateEventInfo()"
+            placeholder="Tên giải đấu..."
+            style="width: 100%"
+          />
+        </div>
+        <div
+          style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 15px"
+        >
+          <div class="form-group">
+            <label>Event Title:</label>
+            <input
+              type="text"
+              id="eventTitle"
+              value="Tatami 1"
+              oninput="updateEventInfo()"
+            />
+          </div>
+          <div class="form-group">
+            <label>Match Info:</label>
+            <input
+              type="text"
+              id="matchInfo"
+              value="KATA CÁ NHÂN NAM LỨA TUỔI 10 TUỔI ĐẾN 11 TUỔI"
+              oninput="updateEventInfo()"
+            />
+          </div>
+          <div class="form-group">
+            <label>Vòng Đấu:</label>
+            <select id="roundSelect" onchange="updateRound()">
+              <option value="Vòng Loại">📝 Vòng Loại</option>
+              <option value="Tứ Kết">📍 Tứ Kết</option>
+              <option value="Bán Kết 1">🥉 Bán Kết 1 (HCĐ #1)</option>
+              <option value="Bán Kết 2">🥉 Bán Kết 2 (HCĐ #2)</option>
+              <option value="Chung Kết">🏆 Chung Kết (HCV/HCB)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- TWO COLUMN LAYOUT -->
+      <div class="admin-grid">
+        <!-- LEFT COLUMN - AKA -->
+        <div>
+          <div class="section competitor-section aka-section">
+            <h2>🔴 AKA (ĐỎ)</h2>
+            <!-- Kata Selection -->
+            <div class="form-group">
+              <label>Kata:</label>
+              <div style="position: relative">
+                <input
+                  type="text"
+                  id="akaKataSearch"
+                  placeholder="🔍 Tìm kata (số hoặc tên, Enter để chọn)..."
+                  oninput="filterKata('aka')"
+                  onkeydown="handleKataSearchKeyPress(event, 'aka')"
+                  style="padding-right: 30px"
+                />
+                <button
+                  onclick="clearKataSearch('aka')"
+                  style="
+                    position: absolute;
+                    right: 5px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 16px;
+                    color: #999;
+                  "
+                  title="Xóa tìm kiếm (ESC)"
+                >
+                  ✖
+                </button>
+              </div>
+              <select id="akaKataSelect" onchange="updateKataName('aka')">
+                <option value="">-- Chọn Kata --</option>
+                <option value="Anan">1. Anan</option>
+                <option value="Anan Dai">2. Anan Dai</option>
+                <option value="Ananko">3. Ananko</option>
+                <option value="Bassai Dai">6. Bassai Dai</option>
+                <option value="Chinte">10. Chinte</option>
+                <option value="Enpi">12. Enpi</option>
+                <option value="Gankaku">15. Gankaku</option>
+                <option value="Hangetsu">23. Hangetsu</option>
+                <option value="Heian Shodan">25. Heian Shodan</option>
+                <option value="Heian Nidan">26. Heian Nidan</option>
+                <option value="Heian Sandan">27. Heian Sandan</option>
+                <option value="Heian Yondan">28. Heian Yondan</option>
+                <option value="Heian Godan">29. Heian Godan</option>
+                <option value="Jion">36. Jion</option>
+                <option value="Jitte">37. Jitte</option>
+                <option value="Kanku Dai">40. Kanku Dai</option>
+                <option value="Kanku Sho">41. Kanku Sho</option>
+                <option value="Nijushiho">60. Nijushiho</option>
+                <option value="Sochin">91. Sochin</option>
+                <option value="Tekki Shodan">93. Tekki Shodan</option>
+                <option value="Unsu">99. Unsu</option>
+              </select>
+            </div>
+            <!-- Individual Mode -->
+            <div id="akaInputIndividual">
+              <div class="form-group">
+                <label>VĐV:</label>
+                <div style="position: relative">
+                  <input
+                    type="text"
+                    id="akaAthleteSearch"
+                    placeholder="🔍 Tìm vận động viên (nhấn Enter để chọn)..."
+                    oninput="filterAthlete('aka')"
+                    onkeydown="handleAthleteSearchKeyPress(event, 'aka')"
+                    style="padding-right: 30px"
+                  />
+                  <button
+                    onclick="clearAthleteSearch('aka')"
+                    style="
+                      position: absolute;
+                      right: 5px;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      background: none;
+                      border: none;
+                      cursor: pointer;
+                      font-size: 16px;
+                      color: #999;
+                    "
+                    title="Xóa tìm kiếm (ESC)"
+                  >
+                    ✖
+                  </button>
+                </div>
+                <select id="akaAthleteSelect" onchange="updateAkaDisplay()">
+                  <option value="">-- Chọn VĐV --</option>
+                </select>
+                <input
+                  type="text"
+                  id="akaAthleteName"
+                  placeholder="Hoặc nhập thủ công"
+                  onchange="updateAkaDisplay()"
+                />
+              </div>
+              <div class="form-group">
+                <label>Đơn vị:</label>
+                <input
+                  type="text"
+                  id="akaUnit"
+                  placeholder="Đơn vị"
+                  onchange="updateAkaDisplay()"
+                />
+              </div>
+            </div>
+
+            <!-- Team Mode -->
+            <div id="akaInputTeam" style="display: none">
+              <div class="form-group">
+                <label>Đơn vị:</label>
+                <select id="akaTeamSelect" onchange="updateAkaDisplay()">
+                  <option value="">-- Chọn Đơn Vị --</option>
+                </select>
+                <input
+                  type="text"
+                  id="akaTeamName"
+                  placeholder="Nhập tên đơn vị"
+                  onchange="updateAkaDisplay()"
+                />
+              </div>
+            </div>
+
+            <!-- Score Control -->
+            <div class="score-control">
+              <button class="btn btn-danger" onclick="adjustScore('aka', -1)">
+                -
+              </button>
+              <span class="score-display" id="akaScore">0</span>
+              <button class="btn btn-success" onclick="adjustScore('aka', 1)">
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN - AO -->
+        <div>
+          <div class="section competitor-section ao-section">
+            <h2>🔵 AO (XANH)</h2>
+            <!-- Kata Selection -->
+            <div class="form-group">
+              <label>Kata:</label>
+              <div style="position: relative">
+                <input
+                  type="text"
+                  id="aoKataSearch"
+                  placeholder="🔍 Tìm kata (số hoặc tên, Enter để chọn)..."
+                  oninput="filterKata('ao')"
+                  onkeydown="handleKataSearchKeyPress(event, 'ao')"
+                  style="padding-right: 30px"
+                />
+                <button
+                  onclick="clearKataSearch('ao')"
+                  style="
+                    position: absolute;
+                    right: 5px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 16px;
+                    color: #999;
+                  "
+                  title="Xóa tìm kiếm (ESC)"
+                >
+                  ✖
+                </button>
+              </div>
+              <select id="aoKataSelect" onchange="updateKataName('ao')">
+                <option value="">-- Chọn Kata --</option>
+                <option value="Anan">1. Anan</option>
+                <option value="Anan Dai">2. Anan Dai</option>
+                <option value="Ananko">3. Ananko</option>
+                <option value="Bassai Dai">6. Bassai Dai</option>
+                <option value="Chinte">10. Chinte</option>
+                <option value="Enpi">12. Enpi</option>
+                <option value="Gankaku">15. Gankaku</option>
+                <option value="Hangetsu">23. Hangetsu</option>
+                <option value="Heian Shodan">25. Heian Shodan</option>
+                <option value="Heian Nidan">26. Heian Nidan</option>
+                <option value="Heian Sandan">27. Heian Sandan</option>
+                <option value="Heian Yondan">28. Heian Yondan</option>
+                <option value="Heian Godan">29. Heian Godan</option>
+                <option value="Jion">36. Jion</option>
+                <option value="Jitte">37. Jitte</option>
+                <option value="Kanku Dai">40. Kanku Dai</option>
+                <option value="Kanku Sho">41. Kanku Sho</option>
+                <option value="Nijushiho">60. Nijushiho</option>
+                <option value="Sochin">91. Sochin</option>
+                <option value="Tekki Shodan">93. Tekki Shodan</option>
+                <option value="Unsu">99. Unsu</option>
+              </select>
+            </div>
+            <!-- Individual Mode -->
+            <div id="aoInputIndividual">
+              <div class="form-group">
+                <label>VĐV:</label>
+                <div style="position: relative">
+                  <input
+                    type="text"
+                    id="aoAthleteSearch"
+                    placeholder="🔍 Tìm vận động viên (nhấn Enter để chọn)..."
+                    oninput="filterAthlete('ao')"
+                    onkeydown="handleAthleteSearchKeyPress(event, 'ao')"
+                    style="padding-right: 30px"
+                  />
+                  <button
+                    onclick="clearAthleteSearch('ao')"
+                    style="
+                      position: absolute;
+                      right: 5px;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      background: none;
+                      border: none;
+                      cursor: pointer;
+                      font-size: 16px;
+                      color: #999;
+                    "
+                    title="Xóa tìm kiếm (ESC)"
+                  >
+                    ✖
+                  </button>
+                </div>
+                <select id="aoAthleteSelect" onchange="updateAoDisplay()">
+                  <option value="">-- Chọn VĐV --</option>
+                </select>
+                <input
+                  type="text"
+                  id="aoAthleteName"
+                  placeholder="Hoặc nhập thủ công"
+                  onchange="updateAoDisplay()"
+                />
+              </div>
+              <div class="form-group">
+                <label>Đơn vị:</label>
+                <input
+                  type="text"
+                  id="aoUnit"
+                  placeholder="Đơn vị"
+                  onchange="updateAoDisplay()"
+                />
+              </div>
+            </div>
+
+            <!-- Team Mode -->
+            <div id="aoInputTeam" style="display: none">
+              <div class="form-group">
+                <label>Đơn vị:</label>
+                <select id="aoTeamSelect" onchange="updateAoDisplay()">
+                  <option value="">-- Chọn Đơn Vị --</option>
+                </select>
+                <input
+                  type="text"
+                  id="aoTeamName"
+                  placeholder="Nhập tên đơn vị"
+                  onchange="updateAoDisplay()"
+                />
+              </div>
+            </div>
+
+            <!-- Score Control -->
+            <div class="score-control">
+              <button class="btn btn-danger" onclick="adjustScore('ao', -1)">
+                -
+              </button>
+              <span class="score-display" id="aoScore">0</span>
+              <button class="btn btn-success" onclick="adjustScore('ao', 1)">
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM SECTION - Full Width -->
+      <div class="admin-grid">
+        <!-- Upload File -->
+        <div class="section">
+          <h2>📁 Upload CSV</h2>
+          <div class="upload-area">
+            <input
+              type="file"
+              id="fileUpload"
+              accept=".csv"
+              onchange="handleFileUpload(event)"
+            />
+            <label for="fileUpload" class="upload-label">
+              <span>Chọn File CSV</span>
+            </label>
+            <div id="uploadStatus"></div>
+          </div>
+        </div>
+
+        <!-- Font Scale -->
+        <div class="section">
+          <h2>📏 Cỡ Chữ Display</h2>
+          <label>
+            Tỷ lệ:
+            <span id="globalFontScaleLabel" style="color: #ffd700">100%</span>
+          </label>
+          <input
+            type="range"
+            id="globalFontScale"
+            min="30"
+            max="150"
+            step="5"
+            value="100"
+            oninput="updateGlobalFontScale(this.value)"
+            style="width: 100%"
+          />
+          <button class="btn btn-secondary" onclick="resetGlobalFontScale()">
+            🔄 Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Match Result Management - Full Width -->
+      <div class="section full-width">
+        <h2>🏆 Quản Lý Kết Quả & Huy Chương</h2>
+        <div class="btn-group" style="margin-bottom: 20px">
+          <button class="btn btn-lg btn-success" onclick="saveMatchResult()">
+            💾 Lưu Kết Quả Trận Này
+          </button>
+          <button
+            class="btn btn-lg btn-info"
+            onclick="viewMatchHistory()"
+            id="viewHistoryBtn"
+          >
+            📜 Xem Lịch Sử Trận (0)
+          </button>
+          <button class="btn btn-lg btn-warning" onclick="generateMedals()">
+            🥇 Tạo Bảng Huy Chương
+          </button>
+          <button
+            class="btn btn-lg btn-primary"
+            onclick="exportMedalsToExcel()"
+          >
+            📊 Xuất Excel Huy Chương
+          </button>
+          <button class="btn btn-lg btn-danger" onclick="clearMatchHistory()">
+            🗑️ Xóa Lịch Sử
+          </button>
+        </div>
+
+        <!-- Match History Display -->
+        <div id="matchHistoryDisplay" style="display: none; margin-top: 20px">
+          <h3 style="color: #ffd700">📋 Lịch Sử Trận Đấu</h3>
+          <div
+            id="matchHistoryList"
+            style="
+              max-height: 300px;
+              overflow-y: auto;
+              background: rgba(0, 0, 0, 0.3);
+              padding: 15px;
+              border-radius: 10px;
+            "
+          >
+            <!-- Will be populated by JS -->
+          </div>
+        </div>
+
+        <!-- Medal Results Display -->
+        <div id="medalResultsDisplay" style="display: none; margin-top: 20px">
+          <h3 style="color: #ffd700">🏅 Kết Quả Huy Chương Theo Nội Dung</h3>
+          <div
+            id="medalResultsList"
+            style="
+              max-height: 400px;
+              overflow-y: auto;
+              background: rgba(0, 0, 0, 0.3);
+              padding: 15px;
+              border-radius: 10px;
+            "
+          >
+            <!-- Will be populated by JS -->
+          </div>
+        </div>
+      </div>
+      <!-- Timer Controls - Full Width -->
+      <div class="section full-width">
+        <h2>⏱️ Điều Khiển Thời Gian</h2>
+        <div class="time-display" id="timeDisplay">5:00</div>
+        <div class="time-controls">
+          <button class="btn btn-lg btn-success" onclick="startTimer()">
+            ▶ Start
+          </button>
+          <button class="btn btn-lg btn-warning" onclick="stopTimer()">
+            ⏸ Stop
+          </button>
+          <button class="btn btn-lg btn-info" onclick="resetTimer()">
+            🔄 Reset Time
+          </button>
+          <button
+            class="btn btn-lg"
+            onclick="resetMatch()"
+            style="
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+            "
+            title="Reset điểm, VĐV và Kata cho trận mới"
+          >
+            🆕 Reset Trận Mới
+          </button>
+          <button class="btn btn-lg btn-danger" onclick="resetAll()">
+            🔄 Reset All
+          </button>
+        </div>
+        <div class="time-presets">
+          <button class="btn" onclick="setTime(90)">1:30</button>
+          <button class="btn" onclick="setTime(120)">2:00</button>
+          <button class="btn" onclick="setTime(180)">3:00</button>
+          <button class="btn" onclick="setTime(300)">5:00</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+  </body>
+</html>
