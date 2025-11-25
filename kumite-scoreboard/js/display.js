@@ -230,7 +230,7 @@ function updateTeamModeDisplay() {
   // Show/hide based on mode
   if (state.mode === "team" && state.teamMode) {
     teamInfoContainer.style.display = "flex";
-    
+
     // Remove individual mode class
     if (timerContent) {
       timerContent.classList.remove("individual-mode");
@@ -253,7 +253,7 @@ function updateTeamModeDisplay() {
     }
   } else {
     teamInfoContainer.style.display = "none";
-    
+
     // Add individual mode class
     if (timerContent) {
       timerContent.classList.add("individual-mode");
