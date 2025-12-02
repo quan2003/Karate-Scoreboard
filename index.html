@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karate Scoreboard System - Trang Chủ</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 60px 40px;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        max-width: 800px;
+        width: 100%;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 3em;
+        margin-bottom: 15px;
+        color: #ffd700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .subtitle {
+        font-size: 1.2em;
+        margin-bottom: 50px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 300;
+      }
+
+      .button-container {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .mode-button {
+        flex: 1;
+        min-width: 280px;
+        max-width: 350px;
+        padding: 40px 30px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .mode-button:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.25);
+        border-color: #ffd700;
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+      }
+
+      .mode-button .icon {
+        font-size: 5em;
+        line-height: 1;
+      }
+
+      .mode-button .title {
+        font-size: 2em;
+        font-weight: 700;
+        color: #ffd700;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .mode-button .subtitle-text {
+        font-size: 1.1em;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 400;
+      }
+
+      .mode-button .description {
+        font-size: 0.95em;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.5;
+        margin-top: 5px;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2.2em;
+        }
+
+        .container {
+          padding: 40px 25px;
+        }
+
+        .button-container {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .mode-button {
+          min-width: 100%;
+          padding: 35px 25px;
+        }
+
+        .mode-button .icon {
+          font-size: 4em;
+        }
+
+        .mode-button .title {
+          font-size: 1.7em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🥋 KARATE SCOREBOARD SYSTEM</h1>
+      <p class="subtitle">Hệ Thống Bảng Điểm Karate</p>
+      <div class="button-container">
+        <a href="./kata-scoreboard/admin_new.html" class="mode-button">
+          <div class="icon">🥋</div>
+          <div class="title">KATA</div>
+          <div class="subtitle-text">Quyền</div>
+          <div class="description">Quản lý thi đấu biểu diễn quyền</div>
+        </a>
+
+        <a href="./kumite-scoreboard/admin.html" class="mode-button">
+          <div class="icon">🥊</div>
+          <div class="title">KUMITE</div>
+          <div class="subtitle-text">Đối Kháng</div>
+          <div class="description">Quản lý thi đấu đối kháng</div>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
